@@ -1,0 +1,139 @@
+
+Written by David Whale on 10/06/2016
+Captured from an email I sent to Dave Jones and Martin O'Hanlon
+
+
+It's more about logical progression through the learning of the language 
+concepts than anything else. Teachers have to fudge over so many things 
+with the existing interfaces.
+
+Here's the basic python we expect all our kids to learn first - notice 
+the absence of dots!
+
+http://blog.whaleygeek.co.uk/python-flashcards/
+
+
+I've had the *best* experiences with python turtle for these reasons
+
+- you can import the whole lot into the namespace and interact with it 
+with simple functions and simple parameters
+
+- there is not much typing of long names with lots of dots and complex 
+parameters, so it is easy to code live interactively at the shell
+
+- you can teach coding with it to very young children, even before going 
+anywhere near the stored program concept.
+
+- many of the complex things happen automatically, so if you just import 
+then try to move forward, it says 'there is no window, so I will create 
+one, there is no turtle, so I will create one'
+
+- there is a natural progression from interactive coding to stored coding 
+with no bump - just store your words in a file then run it
+
+- if you want to move to multiple instances (e.g. multiple turtles) you 
+can change the import style and prefix all words, but everything else just 
+works as you expect. You then have any number of turtles
+
+- you don't have to explain what the dot does, so you don't have to either 
+gloss over it, or explain objects
+
+- the help hints are generally really easy to use
+
+- in many cases, string parameters and sensible default parameters are really 
+helpful - e.g. you can pass a Color object, or you can just pass in 'red'. 
+Same with turtles I think
+
+
+My view with minecraft, is that there are very few concepts at the base level 
+that need to be modelled, so the existing mcpi abstractions are just objects 
+for objects sake. I like to teach functions before I teach parameters, and I 
+like to teach parameters before I teach objects. It's not possible to do that 
+with any of the existing minecraft python interfaces.
+
+Think 'learning Python *using* minecraft'. The kids think they are actually 
+using minecraft, just like when I use the turtle with them at the python shell 
+I don't tell them it is python at first, I just say 'lets send some instructions 
+to the turtle'. Later I tell them how to store programs in a file, and tell them 
+it is just a normal Python program, and the world is their oyster!
+
+
+e.g. a strawman off the top of my head, could be:
+
+from minecraft import *
+
+# mc = minecraft.Minecraft.create()
+# why even bother with this? make it automatic on import, with smart auto-
+reconnect on use?
+
+# mc.postToChat
+chat("hello")
+
+# mc.player.getTilePos()
+x,y,z = where() # separate variables so we can teach coordinates
+pos = where() # tuple
+
+# mc.player.setTilePos()
+teleport(10,20,30) # x,y,z
+teleport((10,20,30)) # tuple
+teleport(home) # tuple received from where()
+moveby(10,20,0)
+jump()
+jump(20)
+north(100) # avoids 'facing' problems on pi
+
+# mc.setBlock()
+drop(FLOWER) # builds at current player position under feet (to avoid 'facing' problem)?
+build(STONE, 10,20,30) # builds at that position
+build(STONE, 10,20,30,100,200,300) # builds a cubeoid of that size
+build(STONE, (10,20,30,100,200,300)) # build from tuple, could store in a var earlier
+build("stone") # for block search/ more friendly error messages if not found??
+build(WOOL, RED)
+build(WOOL, "red") # strings could be entered from an input() statement, this way
+build("wool", "red") 
+block = input("what block?")
+colour = input("what colour")
+build(block, colour)
+
+# mc.getBlock()
+b = standing_on()
+if b == STONE:
+if b in [STONE, AIR, WATER_FLOWING]:
+if standing_on(STONE):
+
+# mc.getHeight()
+h = height() # at current pos
+h = height(10,20) at this pos
+h = height(home) # works well even with tuples
+
+# mc.pollBlockHits()
+if was_hit(10,20,30): # does lookup for you
+if was_hit(10,20,30,TOP) # narrower check for face of block
+
+# help()
+help() # kid friendly help
+help(standing_on) # includes cookbook example
+help(blocks) # lists the block types in a useful table
+
+# moving based on my directional estimator on AIM forum
+if moved():
+if moving(NORTH):
+
+
+
+Then, for the more advanced progression
+
+import minecraft
+
+everything is namespace protected
+
+
+Then, if you use mc = minecraft.create() you get an independent instance
+so you could connect to multiple minecraft games.
+
+minecraft.get_player() or mc.get_player() could get a player instance object 
+you interact with
+
+END.
+
+
